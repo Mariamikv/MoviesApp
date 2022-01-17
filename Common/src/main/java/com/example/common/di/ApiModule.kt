@@ -1,4 +1,4 @@
-package com.example.network.api.di
+package com.example.common.di
 
 import com.example.network.api.request.ApiService
 import org.koin.dsl.module

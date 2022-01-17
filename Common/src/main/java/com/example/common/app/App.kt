@@ -1,11 +1,11 @@
-package com.example.network.app
+package com.example.common.app
 
 import android.app.Application
 import android.content.Context
-import com.example.network.api.di.apiModule
-import com.example.network.api.di.repositoryModule
-import com.example.network.api.di.retrofitModule
-import com.example.network.api.di.viewModelModule
+import com.example.common.di.apiModule
+import com.example.common.di.repositoryModule
+import com.example.common.di.retrofitModule
+import com.example.common.di.viewModelModule
 import org.koin.android.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

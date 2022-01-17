@@ -1,4 +1,4 @@
-package com.example.network.api.di
+package com.example.common.di
 
 import com.google.gson.GsonBuilder
 import okhttp3.Cache
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 private const val CONNECT_TIMEOUT = 15L
 private const val WRITE_TIMEOUT = 15L
 private const val READ_TIMEOUT = 15L
-private const val BASE_URL = "https://api.dictionaryapi.dev/api/v2/entries/"
+private const val BASE_URL = "https://api.imovies.cc/"
 
 val retrofitModule = module {
     single {

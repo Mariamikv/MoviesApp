@@ -1,4 +1,4 @@
-package com.example.network.api.di
+package com.example.common.di
 
 import com.example.hometest.view_model.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
