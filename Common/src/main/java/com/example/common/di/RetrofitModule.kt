@@ -1,5 +1,7 @@
 package com.example.common.di
 
+import android.webkit.WebSettings
+import com.example.common.app.App
 import com.google.gson.GsonBuilder
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -31,20 +33,23 @@ val retrofitModule = module {
     single {
         retrofitBuilder()
     }
-    single {
-        Interceptor { chain ->
-            chain.proceed(chain.request().newBuilder().apply {
-                header("Accept", "*/*")
-            }.build())
-        }
+    single(override = true) {
+        OkHttpClient.Builder().addInterceptor(
+            Interceptor { chain ->
+                chain.proceed(chain.request().newBuilder().apply {
+                    addHeader("User-Agent", "MoviesApp")
+                }.build())
+            }
+        ).build()
+
     }
 }
 
 private fun Scope.retrofitBuilder(): Retrofit {
     return Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(get()))
         .client(get())
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
 

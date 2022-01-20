@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val moviesRepository: MoviesRepository): ViewModel() {
-    var movies = MutableLiveData<List<Movies>>()
+    var movies = MutableLiveData<Movies>()
 
-    suspend fun getMovies(): LiveData<List<Movies>>{
+    suspend fun getMovies(): LiveData<Movies>{
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 movies = moviesRepository.getMoviesList()

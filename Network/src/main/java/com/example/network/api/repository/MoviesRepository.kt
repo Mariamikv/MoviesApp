@@ -6,11 +6,11 @@ import com.example.network.api.request.ApiService
 import com.example.network.models.Movies
 
 class MoviesRepository(private val apiService: ApiService) {
-    suspend fun getMoviesList(): MutableLiveData<List<Movies>>{
-        val moviesLiveData = MutableLiveData<List<Movies>>().apply {
+    suspend fun getMoviesList(): MutableLiveData<Movies>{
+        val moviesLiveData = MutableLiveData<Movies>().apply {
             mutableListOf<Movies>()
         }
-        val _moviesLiveData: LiveData<List<Movies>> = moviesLiveData
+        val _moviesLiveData: LiveData<Movies> = moviesLiveData
 
         val response = apiService.moviesList()
         if (response.isSuccessful){
