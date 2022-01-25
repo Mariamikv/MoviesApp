@@ -14,11 +14,11 @@ class HomeViewModel(private val moviesRepository: MoviesRepository): ViewModel()
     var movies = MutableLiveData<Movies>()
 
     suspend fun getMovies(): LiveData<Movies>{
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
+//        viewModelScope.launch {
+//            withContext(Dispatchers.IO){
                 movies = moviesRepository.getMoviesList()
-            }
-        }
+//            }
+//        }
         return movies
     }
 }
