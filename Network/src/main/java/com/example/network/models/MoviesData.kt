@@ -1,8 +1,11 @@
 package com.example.network.models
 
-
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
+@Parcelize
 data class MoviesData(
     @SerializedName("id")
     val id: Int?,
@@ -31,7 +34,7 @@ data class MoviesData(
     @SerializedName("packAllowed")
     val packAllowed: Boolean?,
     @SerializedName("parentalControlRate")
-    val parentalControlRate: Any?,
+    val parentalControlRate: @RawValue Any?,
     @SerializedName("poster")
     val poster: String?,
     @SerializedName("primaryName")
@@ -75,4 +78,4 @@ data class MoviesData(
     val userWantsToWatch: UserWantsToWatch?,
     @SerializedName("userWatch")
     val userWatch: UserWatch?,
-)
+): Parcelable

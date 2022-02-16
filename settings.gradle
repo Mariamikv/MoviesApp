@@ -10,5 +10,7 @@ rootProject.name = "MoviesApp"
 include ':app'
 include ':Base'
 include ':Network'
-include ':HomeTest'
+include ':movies'
 include ':Common'
+include ':MoviesDetails'
+include ':SplashScreen'
