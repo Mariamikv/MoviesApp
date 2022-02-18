@@ -7,7 +7,7 @@ import com.example.hometest.R
 fun ImageView.setImageUrl(url:String){
     if(url.isNotEmpty()){
         Glide.with(context).load(url)
-            .placeholder(R.drawable.image)
+            .placeholder(R.drawable.error)
             .into(this)
     }
 }

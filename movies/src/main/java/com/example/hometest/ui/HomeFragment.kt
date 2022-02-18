@@ -1,15 +1,19 @@
 package com.example.hometest.ui
 
+import android.R
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.base.BaseFragment
 import com.example.hometest.adapters.MoviesAdapter
 import com.example.hometest.databinding.HomeFragmentBinding
 import com.example.hometest.view_model.HomeViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
+
 
 class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::inflate) {
 
@@ -25,6 +29,18 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
             observe()
         }
         initRecyclerView()
+        showSearchBar()
+    }
+
+    private fun showSearchBar(){
+
+        with(binding){
+            searchButton.setOnClickListener {
+                title.visibility = View.GONE
+                searchButton.visibility = View.GONE
+                searchView.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun initRecyclerView(){
@@ -34,7 +50,7 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
         }
 
         binding.moviesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(requireContext(),2)
             adapter = moviesAdapter
         }
     }

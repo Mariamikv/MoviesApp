@@ -9,6 +9,10 @@
         <entry key="..\:/Users/Kvanto/AndroidStudioProjects/MoviesApp/MoviesDetails/src/main/res/layout/fragment_details.xml" value="0.264" />
         <entry key="..\:/Users/Kvanto/AndroidStudioProjects/MoviesApp/SplashScreen/src/main/res/layout/fragment_splash_screen.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Kvanto/AndroidStudioProjects/MoviesApp/app/src/main/res/layout/activity_main.xml" value="0.25025641025641027" />
+        <entry key="..\:/Users/Kvanto/AndroidStudioProjects/MoviesApp/movies/src/main/res/drawable/ic_magnifying_glass_svgrepo_com.xml" value="0.104" />
+        <entry key="..\:/Users/Kvanto/AndroidStudioProjects/MoviesApp/movies/src/main/res/drawable/toolbar.xml" value="0.104" />
+        <entry key="..\:/Users/Kvanto/AndroidStudioProjects/MoviesApp/movies/src/main/res/layout/home_fragment.xml" value="0.2" />
+        <entry key="..\:/Users/Kvanto/AndroidStudioProjects/MoviesApp/movies/src/main/res/layout/movies_list_layout.xml" value="0.264" />
       </map>
     </option>
   </component>

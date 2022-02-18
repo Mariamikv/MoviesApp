@@ -3,30 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/splashScreen">
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.hometest.ui.HomeFragment"
-        app:moduleName="MoviesApp.HomeTest"
-        android:label="home_fragment"
-        tools:layout="@layout/home_fragment" >
-    </fragment>
-
-    <fragment
-        android:id="@+id/splashScreen"
-        android:name="com.example.splashscreen.SplashScreenFragment"
-        app:moduleName="MoviesApp.SplashScreen"
-        android:label="fragment_splash_screen"
-        tools:layout="@layout/fragment_splash_screen" >
-        <action
-            android:id="@+id/action_splashScreen_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+    app:startDestination="@id/splashScreenFragment">
 
 <!--    <fragment-->
-<!--        android:id="@+id/detailsFragment"-->
-<!--        android:name="com.example.moviesdetails.ui.DetailsFragment"-->
-<!--        app:moduleName="MoviesApp.HomeTest"-->
-<!--        android:label="DetailsFragment"-->
-<!--        tools:layout="@layout/details_fragment"/>-->
+<!--        android:id="@+id/homeFragment"-->
+<!--        android:name="com.example.hometest.ui.HomeFragment"-->
+<!--        android:label="home_fragment"-->
+<!--        app:moduleName="MoviesApp.movies"-->
+<!--        tools:layout="@layout/home_fragment">-->
+<!--    </fragment>-->
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.example.splashscreen.SplashScreenFragment"
+        android:label="fragment_splash_screen"
+        app:moduleName="MoviesApp.SplashScreen"
+        tools:layout="@layout/fragment_splash_screen">
+        <deepLink
+            app:uri="android-app://com.example.splashscreen/splashScreenFragment" />
+    </fragment>
+
 </navigation>
