@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title">Movies List</string>
+    <string name="descriprion">descriprion</string>
+    <string name="imdb">imdb</string>
+    <string name="genres">genres</string>
+    <string name="default_value">00:00</string>
+    <string name="play_movie">play movie</string>
 </resources>

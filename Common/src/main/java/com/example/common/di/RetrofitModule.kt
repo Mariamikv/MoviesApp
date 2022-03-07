@@ -1,7 +1,5 @@
 package com.example.common.di
 
-import android.webkit.WebSettings
-import com.example.common.app.App
 import com.google.gson.GsonBuilder
 import okhttp3.Cache
 import okhttp3.Interceptor

@@ -1,10 +1,16 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
     compileSdk 31
+
+    buildFeatures {
+        viewBinding true
+    }
 
     defaultConfig {
         minSdk 21
@@ -34,6 +40,9 @@ android {
 dependencies {
     implementation project(path: ':movies')
     implementation project(path: ':Network')
+    implementation project(":navigations")
+
+    implementation project(path: ':Base')
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -70,5 +79,16 @@ dependencies {
 
     // okhttp
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+
+    // navigation
+
+    def nav_version = "2.4.1"
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+    //lottie animation
+    implementation "com.airbnb.android:lottie:3.4.0"
 
 }

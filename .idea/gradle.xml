@@ -16,7 +16,10 @@
             <option value="$PROJECT_DIR$/Network" />
             <option value="$PROJECT_DIR$/SplashScreen" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/helper" />
             <option value="$PROJECT_DIR$/movies" />
+            <option value="$PROJECT_DIR$/navigations" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
