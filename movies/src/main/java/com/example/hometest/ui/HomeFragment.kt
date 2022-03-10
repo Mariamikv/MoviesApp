@@ -46,7 +46,7 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
     private fun checkInternetConnection(){
         if (checkForInternet(requireContext())) {
             Toast.makeText(requireContext(), "Connected", Toast.LENGTH_SHORT).show()
-            dataFromDB()
+            //dataFromDB()
         } else {
             Toast.makeText(requireContext(), "Disconnected", Toast.LENGTH_SHORT).show()
         }
@@ -70,13 +70,13 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
         }
     }
 
-    private fun dataFromDB(){
-        viewModel.read()
-        viewModel._moviesData.observe(viewLifecycleOwner) {
-            // adapters unda movargot databasedan wamogebuli datazzzzzzzzz
-            //moviesAdapter.setData(it)
-        }
-    }
+//    private fun dataFromDB(){
+//        viewModel.read()
+//        viewModel._moviesData.observe(viewLifecycleOwner) {
+//            // adapters unda movargot databasedan wamogebuli datazzzzzzzzz
+//            //moviesAdapter.setData(it)
+//        }
+//    }
 
     private fun showSearchBar(){
         with(binding){
@@ -151,9 +151,9 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
         viewModel.getMovies().observe(viewLifecycleOwner) {
             moviesAdapter.setData(it.moviesData)
 
-            //write into database
-            viewModel.writeEpisode(it.moviesData?.get(0)?.secondaryName,it.moviesData?.get(0)?.plot?.plotData?.description,
-                it.moviesData?.get(0)?.posters?.postersData?.x240, it.moviesData?.get(0)?.imdbUrl)
+//            //write into database
+//            viewModel.writeEpisode(it.moviesData?.get(0)?.secondaryName,it.moviesData?.get(0)?.plot?.plotData?.description,
+//                it.moviesData?.get(0)?.posters?.postersData?.x240, it.moviesData?.get(0)?.imdbUrl)
         }
     }
 }
