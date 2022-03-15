@@ -5,18 +5,24 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.base.BaseFragment
 import com.example.hometest.R
 import com.example.hometest.databinding.PlayMovieFragmentBinding
 import com.example.hometest.extensions.currentSeconds
 import com.example.hometest.extensions.seconds
+import com.example.hometest.view_model.PlayMovieViewModel
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
 
 @RequiresApi(Build.VERSION_CODES.O)
 class PlayMovieFragment: BaseFragment<PlayMovieFragmentBinding>(PlayMovieFragmentBinding::inflate),
@@ -27,6 +33,10 @@ class PlayMovieFragment: BaseFragment<PlayMovieFragmentBinding>(PlayMovieFragmen
     private var handler = Handler(Looper.getMainLooper())
     private val data: PlayMovieFragmentArgs by navArgs()
 
+    private val viewModel = get<PlayMovieViewModel>()
+
+    private var src: String = ""
+
     companion object {
         const val SECOND = 1000
     }
@@ -36,6 +46,9 @@ class PlayMovieFragment: BaseFragment<PlayMovieFragmentBinding>(PlayMovieFragmen
     }
 
     private fun init(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            observe(data.movieID)
+        }
         mediaPlayer.setOnPreparedListener(this)
         binding.videoView.holder.addCallback(this)
         binding.seekBar.setOnSeekBarChangeListener(this)
@@ -52,6 +65,14 @@ class PlayMovieFragment: BaseFragment<PlayMovieFragmentBinding>(PlayMovieFragmen
                 mediaPlayer.start()
                 binding.playButton.setImageResource(android.R.drawable.ic_media_pause)
             }
+        }
+    }
+
+    private suspend fun observe(id: Int){
+        viewModel.playMovie(id).observe(viewLifecycleOwner){
+            Log.d("play: ", "${it.data?.get(0)?.files?.get(0)?.files?.get(0)?.src}")
+            src = it.data?.get(0)?.files?.get(0)?.files?.get(0)?.src.toString()
+
         }
     }
 
@@ -80,8 +101,6 @@ class PlayMovieFragment: BaseFragment<PlayMovieFragmentBinding>(PlayMovieFragmen
         handler.postDelayed(runnable, SECOND.toLong())
     }
 
-
-
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         if (fromUser){
             mediaPlayer.seekTo(progress * SECOND)
@@ -96,7 +115,7 @@ class PlayMovieFragment: BaseFragment<PlayMovieFragmentBinding>(PlayMovieFragmen
         mediaPlayer.apply {
             setOnDrmInfoListener(this@PlayMovieFragment)
 
-            setDataSource(data.movieURL)
+            setDataSource(src)
             setDisplay(holder)
             prepareAsync()
         }

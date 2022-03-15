@@ -34,9 +34,7 @@
         android:label="play_movie_fragment"
         tools:layout="@layout/play_movie_fragment" >
         <argument
-            android:name="movieURL"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="null" />
+            android:name="movieID"
+            app:argType="integer" />
     </fragment>
 </navigation>

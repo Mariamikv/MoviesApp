@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.base.BaseFragment
@@ -33,7 +34,11 @@ class DetailsFragment: BaseFragment<FragmentDetailsBinding>(FragmentDetailsBindi
 
             playMovie.setOnClickListener {
                 // send movies play url
-                findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToPlayMovieFragment(args.data?.imdbUrl))
+                findNavController().navigate(
+                    DetailsFragmentDirections.actionDetailsFragmentToPlayMovieFragment(
+                        args.data?.id!!
+                    )
+                )
             }
         }
     }
