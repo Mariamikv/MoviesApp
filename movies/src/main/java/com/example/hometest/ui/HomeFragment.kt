@@ -10,14 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.base.BaseFragment
 import com.example.hometest.adapters.MoviesAdapter
 import com.example.hometest.databinding.HomeFragmentBinding
 import com.example.hometest.view_model.HomeViewModel
 import com.example.network.models.MoviesData
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 
@@ -30,17 +34,35 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
     private var matchedMovies: ArrayList<MoviesData> = arrayListOf()
     private var movies: ArrayList<MoviesData> = arrayListOf()
 
+    private var searchJob: Job? = null
+
     override fun startCreating(inflater: LayoutInflater, container: ViewGroup?) {
         init()
     }
 
     private fun init(){
         viewLifecycleOwner.lifecycleScope.launch {
-            observe()
+            //startSearchJob()
         }
         initRecyclerView()
         showSearchBar()
         checkInternetConnection()
+
+
+        moviesAdapter = MoviesAdapter()
+        startSearchJob()
+        setUpAdapter()
+    }
+
+    private fun startSearchJob() {
+
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            viewModel.getListData()
+                .collectLatest {
+                    moviesAdapter.submitData(it)
+                }
+        }
     }
 
     private fun checkInternetConnection(){
@@ -130,7 +152,7 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
 
     private fun updateRecyclerView(){
         binding.moviesRecyclerView.apply {
-            moviesAdapter.setData(matchedMovies)
+            //moviesAdapter.setData(matchedMovies)
             moviesAdapter.notifyDataSetChanged()
         }
     }
@@ -147,13 +169,45 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
         }
     }
 
-    private suspend fun observe(){
-        viewModel.getMovies().observe(viewLifecycleOwner) {
-            moviesAdapter.setData(it.moviesData)
+    private fun setUpAdapter() {
 
-//            //write into database
-//            viewModel.writeEpisode(it.moviesData?.get(0)?.secondaryName,it.moviesData?.get(0)?.plot?.plotData?.description,
-//                it.moviesData?.get(0)?.posters?.postersData?.x240, it.moviesData?.get(0)?.imdbUrl)
+        binding.moviesRecyclerView.apply {
+            adapter = moviesAdapter
+        }
+
+        moviesAdapter.addLoadStateListener { loadState ->
+
+            if (loadState.refresh is LoadState.Loading) {
+
+                if (moviesAdapter.snapshot().isEmpty()) {
+                    binding.progressIndicator.isVisible = true
+                }
+                binding.errorTextView.isVisible = false
+
+            } else {
+                binding.progressIndicator.isVisible = false
+
+                val error = when {
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+
+                    else -> null
+                }
+                error?.let {
+                    if (moviesAdapter.snapshot().isEmpty()) {
+                        binding.errorTextView.isVisible = true
+                        binding.errorTextView.text = it.error.localizedMessage
+                    }
+                }
+
+            }
         }
     }
+
+//    private suspend fun observe(){
+//        viewModel.getMovies().observe(viewLifecycleOwner) {
+//            moviesAdapter.setData(it.moviesData)
+//        }
+//    }
 }

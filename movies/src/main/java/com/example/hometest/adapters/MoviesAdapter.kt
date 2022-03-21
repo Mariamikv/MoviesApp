@@ -2,13 +2,15 @@ package com.example.hometest.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hometest.databinding.MoviesListLayoutBinding
 import com.example.hometest.extensions.setImageUrl
 import com.example.network.models.Movies
 import com.example.network.models.MoviesData
 
-class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+class MoviesAdapter: PagingDataAdapter<MoviesData, MoviesAdapter.MoviesViewHolder>(DiffUtilCallBack()) {
 
     private var moviesData = mutableListOf<MoviesData>()
     private var onClick: ((data: MoviesData) -> Unit)? = null
@@ -18,16 +20,19 @@ class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
         return MoviesViewHolder(dataHolder)
     }
 
-    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) = holder.bind(moviesData[position], onClick!!)
+//    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) = holder.bind(moviesData[position], onClick!!)
 
-    override fun getItemCount(): Int  = moviesData.size
+//    override fun getItemCount(): Int  = moviesData.size
+
+    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
+        holder.bind(getItem(position)!!, onClick!!)
+    }
 
     class MoviesViewHolder(private val binding: MoviesListLayoutBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(data: MoviesData, onClick: (moviesData: MoviesData) -> Unit){
             with(binding){
                 binding.data = data
 
-                //data.genres?.genresData?.get(0)?.backgroundImage?.let { image.setImageUrl(it) }
                 data.posters?.postersData?.x240.let {
                     if (it != null) {
                         image.setImageUrl(it)
@@ -40,15 +45,45 @@ class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
         }
     }
 
-    fun setData(data: List<MoviesData>?){
-        moviesData.clear()
-        if (data != null) {
-            moviesData.addAll(data)
-        }
-        notifyDataSetChanged()
-    }
+//    class MoviesViewHolder(private val binding: MoviesListLayoutBinding): RecyclerView.ViewHolder(binding.root){
+//        fun bind(data: MoviesData, onClick: (moviesData: MoviesData) -> Unit){
+//            with(binding){
+//                binding.data = data
+//
+//                //data.genres?.genresData?.get(0)?.backgroundImage?.let { image.setImageUrl(it) }
+//                data.posters?.postersData?.x240.let {
+//                    if (it != null) {
+//                        image.setImageUrl(it)
+//                    }
+//                }
+//                root.setOnClickListener {
+//                    onClick.invoke(data)
+//                }
+//            }
+//        }
+//    }
+
+//    fun setData(data: List<MoviesData>?){
+//        moviesData.clear()
+//        if (data != null) {
+//            moviesData.addAll(data)
+//        }
+//        notifyDataSetChanged()
+//    }
 
     fun onClickListener(onClick: (data: MoviesData) -> Unit){
         this.onClick = onClick
+    }
+
+    class DiffUtilCallBack : DiffUtil.ItemCallback<MoviesData>(){
+
+        override fun areItemsTheSame(oldItem: MoviesData, newItem: MoviesData): Boolean {
+            return oldItem.secondaryName == newItem.secondaryName
+        }
+
+        override fun areContentsTheSame(oldItem: MoviesData, newItem: MoviesData): Boolean {
+            return oldItem == newItem
+        }
+
     }
 }

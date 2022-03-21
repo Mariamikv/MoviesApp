@@ -3,10 +3,7 @@ package com.example.common.app
 import android.app.Application
 import android.content.Context
 import com.example.common.BuildConfig
-import com.example.common.di.apiModule
-import com.example.common.di.repositoryModule
-import com.example.common.di.retrofitModule
-import com.example.common.di.viewModelModule
+import com.example.common.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -35,7 +32,8 @@ class App: Application() {
                 viewModelModule,
                 apiModule,
                 repositoryModule,
-                retrofitModule
+                retrofitModule,
+                pagingSourceModule
             ))
         }
         instance = this
