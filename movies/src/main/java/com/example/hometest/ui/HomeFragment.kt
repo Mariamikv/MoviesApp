@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.base.BaseFragment
 import com.example.hometest.adapters.MoviesAdapter
@@ -22,6 +23,7 @@ import com.example.hometest.view_model.HomeViewModel
 import com.example.network.models.MoviesData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 
@@ -41,28 +43,29 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
     }
 
     private fun init(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            //startSearchJob()
-        }
         initRecyclerView()
         showSearchBar()
         checkInternetConnection()
-
-
-        moviesAdapter = MoviesAdapter()
         startSearchJob()
-        setUpAdapter()
     }
 
     private fun startSearchJob() {
-
+        movies = arrayListOf()
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
+            viewModel.getListData()
+                .map { pagingData ->
+                    pagingData.map { movie ->
+                    Log.d("find:   ", movie.toString())
+                        movies.addAll(listOf(movie))
+                    }
+                }
             viewModel.getListData()
                 .collectLatest {
                     moviesAdapter.submitData(it)
                 }
         }
+        Log.d("dataaaa", movies.toString())
     }
 
     private fun checkInternetConnection(){
@@ -119,9 +122,6 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 startSearch(query)
-                if (query != null) {
-                    Log.d("name", query)
-                }
                 return true
             }
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -132,6 +132,10 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
     }
 
     private fun startSearch(text: String?){
+
+        Log.d("name", text.toString())
+        Log.d("moviessss", movies.toString())
+
         matchedMovies = arrayListOf()
 
         text?.let {
@@ -152,7 +156,7 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
 
     private fun updateRecyclerView(){
         binding.moviesRecyclerView.apply {
-            //moviesAdapter.setData(matchedMovies)
+            //moviesAdapter.submitData(matchedMovies)
             moviesAdapter.notifyDataSetChanged()
         }
     }
@@ -165,13 +169,6 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
 
         binding.moviesRecyclerView.apply {
             layoutManager = GridLayoutManager(requireContext(),2)
-            adapter = moviesAdapter
-        }
-    }
-
-    private fun setUpAdapter() {
-
-        binding.moviesRecyclerView.apply {
             adapter = moviesAdapter
         }
 
@@ -204,10 +201,4 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::infla
             }
         }
     }
-
-//    private suspend fun observe(){
-//        viewModel.getMovies().observe(viewLifecycleOwner) {
-//            moviesAdapter.setData(it.moviesData)
-//        }
-//    }
 }
